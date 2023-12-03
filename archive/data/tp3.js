@@ -2,9 +2,12 @@
 import * as THREE from 'three';
 import { OutlineEffect } from 'three/addons/effects/OutlineEffect.js';
 // TODO: importer les modules nécessaires
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-let scene, camera, renderer;  // Bases pour le rendu Three.js
+let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
+let mesh, material, outlineEffect;
 
 function loadFile(filePath) {
     var result = null;
@@ -21,18 +24,48 @@ function loadFile(filePath) {
 function createScene() {
     scene = new THREE.Scene();
     // TODO: Compléter cette fonction
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
+    camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
+    camera.position.z = 5;
+
+    outlineEffect = new OutlineEffect(renderer);
+    loadCubemapTexture(scene);
+}
+
+function loadCubemapTexture(scene) {
+    const loader = new THREE.CubeTextureLoader();
+    const texture = loader.load([
+        "textures/negx.jpg",
+        "textures/posx.jpg",
+        "textures/negy.jpg",
+        "textures/posy.jpg",
+        "textures/negz.jpg",
+        "textures/posz.jpg"
+    ]);
+    scene.background = texture;
 }
 
 function createMaterial(vertShader, fragShader){
     // TODO: Création du matériau Shader
-    meshMaterial = null;
+    let meshMaterial = new THREE.ShaderMaterial({
+        vertexShader: vertShader,
+        fragmentShader: fragShader
+        });
     return meshMaterial;
 }
 
 function animate() {     
     requestAnimationFrame(animate);
+    
     renderer.render(scene, camera);
     // TODO: modifier pour utiliser un postprocessing
+    outlineEffect.render(scene, camera);
 }
 
 function init() {
@@ -57,9 +90,19 @@ function init() {
     const fragmentShaderSource = loadFile("./tp3.frag");
     let material = createMaterial(vertexShaderSource, fragmentShaderSource);
 
+    //material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
     // TODO: Importation du modèle 3D
+    const loader = new STLLoader();
+    loader.load('./model/AnnaElsaOlafUnion.stl', function (geometry) {
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(0, 0, 0);
+        mesh.scale.set(0.03, 0.03, 0.03);
+        scene.add(mesh);
+    });
     
     // TODO: Ajout de l'interactivité avec la souris
+    const controls = new OrbitControls(camera, renderer.domElement);
 
     // TODO: Postprocessing
 
