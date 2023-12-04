@@ -32,7 +32,7 @@ function createScene() {
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
-    camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
+    camera = new THREE.PerspectiveCamera( 100, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
     camera.position.z = 5;
 
 
@@ -98,6 +98,7 @@ function init() {
     const loader = new STLLoader();
     loader.load('./model/AnnaElsaOlafUnion.stl', function (geometry) {
         mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
         mesh.position.set(0, 0, 0);
         mesh.scale.set(0.03, 0.03, 0.03);
         scene.add(mesh);
