@@ -4,10 +4,11 @@ import { OutlineEffect } from 'three/addons/effects/OutlineEffect.js';
 // TODO: importer les modules nécessaires
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
 let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
-let mesh, material, outlineEffect;
+let mesh, material, outlineEffect, controlsArcball;
 
 function loadFile(filePath) {
     var result = null;
@@ -103,7 +104,16 @@ function init() {
     
     // TODO: Ajout de l'interactivité avec la souris
     const controls = new OrbitControls(camera, renderer.domElement);
+    controlsArcball = new ArcballControls( camera, renderer.domElement, scene );
 
+    controlsArcball.addEventListener( 'change', function () {
+    
+        renderer.render( scene, camera );
+    
+    } );
+    
+    controlsArcball.update();
+    
     // TODO: Postprocessing
 
     // Animation de la scèene (appelée toutes les 30 ms)
