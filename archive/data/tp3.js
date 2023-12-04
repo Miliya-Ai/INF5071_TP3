@@ -6,6 +6,13 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
+
+// Kim Trinh
+// Miliya Ai
+
+//Chrome
+//Lien vers le skybox: https://www.humus.name/index.php?page=Cubemap&item=Tantolunden
+
 let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
 let mesh, material, outlineEffect, controlsArcball;
@@ -91,6 +98,8 @@ function init() {
     const vertexShaderSource = loadFile("./tp3.vert");
     const fragmentShaderSource = loadFile("./tp3.frag");
     let material = createMaterial(vertexShaderSource, fragmentShaderSource);
+
+    
 
     //material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 
