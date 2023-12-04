@@ -97,11 +97,16 @@ function init() {
     // Création du matériau shader
     const vertexShaderSource = loadFile("./tp3.vert");
     const fragmentShaderSource = loadFile("./tp3.frag");
-    let material = createMaterial(vertexShaderSource, fragmentShaderSource);
 
-    
-
-    //material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    material = new THREE.ShaderMaterial({
+    uniforms: {
+		time: { value: 1.0 },
+		resolution: { value: new THREE.Vector2() }
+	},
+    vertexShader: vertexShaderSource,
+    fragmentShader: fragmentShaderSource,
+    transparent: true
+    });
 
     // TODO: Importation du modèle 3D
     const loader = new STLLoader();
