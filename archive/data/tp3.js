@@ -99,7 +99,7 @@ function init() {
     loader.load('./model/AnnaElsaOlafUnion.stl', function (geometry) {
         mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.x = -Math.PI / 2;
-        mesh.position.set(0, 0, 0);
+        mesh.position.set(0, -2, 0);
         mesh.scale.set(0.03, 0.03, 0.03);
         scene.add(mesh);
     });
