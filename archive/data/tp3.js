@@ -35,7 +35,8 @@ function createScene() {
     camera = new THREE.PerspectiveCamera( 75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
     camera.position.z = 5;
 
-    outlineEffect = new OutlineEffect(renderer);
+
+    outlineEffect = new OutlineEffect(renderer, { defaultThickness: 0.01, defaultColor: [0, 0, 0] });
     loadCubemapTexture(scene);
 }
 
@@ -113,7 +114,7 @@ function init() {
     } );
     
     controlsArcball.update();
-    
+
     // TODO: Postprocessing
 
     // Animation de la scèene (appelée toutes les 30 ms)
