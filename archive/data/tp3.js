@@ -101,10 +101,8 @@ function init() {
     // Création du matériau shader
     material = new THREE.ShaderMaterial({
     uniforms: {
-		modelview: { type: 'm4', value: camera.matrixWorldInverse },
-        projection: { type: 'm4', value: camera.projectionMatrix },
         lightPosition: { type: 'v4', value: new THREE.Vector4(0, 0, 0, 1) },
-        diffuseColor: { type: 'v4', value: new THREE.Vector4(1, 1, 1, 1) },
+        diffuseColor: { type: 'v4', value: new THREE.Vector4(0.1, 0.5, 2, 1) },
 	},
     vertexShader: vertexShaderSource,
     fragmentShader: fragmentShaderSource,
@@ -125,6 +123,7 @@ function init() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controlsArcball = new ArcballControls( camera, renderer.domElement, scene );
 
+    //enlever trackball
     controlsArcball.addEventListener( 'passive', function () {
     
         renderer.render( scene, camera );
