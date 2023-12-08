@@ -16,6 +16,8 @@ import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
 let mesh, material, outlineEffect, controlsArcball;
+let gl;   // The webgl context.
+let ambientLight, directionalLight;
 
 function loadFile(filePath) {
     var result = null;
@@ -32,10 +34,10 @@ function loadFile(filePath) {
 function createScene() {
     scene = new THREE.Scene();
     // TODO: Compléter cette fonction
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    ambientLight = new THREE.AmbientLight(0x404040);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
@@ -90,18 +92,19 @@ function init() {
     }
 
     // TODO: Importation des textures
-    
+    const vertexShaderSource = loadFile("./tp3.vert");
+    const fragmentShaderSource = loadFile("./tp3.frag");
+
     // Création de la scène 3D
     createScene();
 
     // Création du matériau shader
-    const vertexShaderSource = loadFile("./tp3.vert");
-    const fragmentShaderSource = loadFile("./tp3.frag");
-
     material = new THREE.ShaderMaterial({
     uniforms: {
-		time: { value: 1.0 },
-		resolution: { value: new THREE.Vector2() }
+		modelview: { type: 'm4', value: camera.matrixWorldInverse },
+        projection: { type: 'm4', value: camera.projectionMatrix },
+        lightPosition: { type: 'v4', value: new THREE.Vector4(0, 0, 0, 1) },
+        diffuseColor: { type: 'v4', value: new THREE.Vector4(1, 1, 1, 1) },
 	},
     vertexShader: vertexShaderSource,
     fragmentShader: fragmentShaderSource,
@@ -117,12 +120,12 @@ function init() {
         mesh.scale.set(0.03, 0.03, 0.03);
         scene.add(mesh);
     });
-    
+
     // TODO: Ajout de l'interactivité avec la souris
     const controls = new OrbitControls(camera, renderer.domElement);
     controlsArcball = new ArcballControls( camera, renderer.domElement, scene );
 
-    controlsArcball.addEventListener( 'change', function () {
+    controlsArcball.addEventListener( 'passive', function () {
     
         renderer.render( scene, camera );
     
