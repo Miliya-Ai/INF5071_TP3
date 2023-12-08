@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { OutlineEffect } from 'three/addons/effects/OutlineEffect.js';
 // TODO: importer les modules nécessaires
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
 
@@ -15,7 +14,7 @@ import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
 let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
-let mesh, material, outlineEffect, controlsArcball;
+let mesh, material, outlineEffect, controls;
 let ambientLight, directionalLight;
 
 function loadFile(filePath) {
@@ -41,7 +40,7 @@ function createScene() {
     scene.add(directionalLight);
 
     camera = new THREE.PerspectiveCamera( 100, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
-    camera.position.z = 5;
+    camera.position.z = 3.5;
 
     loadCubemapTexture(scene);
 }
@@ -108,17 +107,8 @@ function init() {
     });
 
     // TODO: Ajout de l'interactivité avec la souris
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controlsArcball = new ArcballControls( camera, renderer.domElement, scene );
-
-    //enlever trackball
-    controlsArcball.addEventListener( 'passive', function () {
-    
-        renderer.render( scene, camera );
-    
-    } );
-    
-    controlsArcball.update();
+    controls = new ArcballControls(camera, renderer.domElement, scene);
+    controls.setGizmosVisible(false);
 
     // TODO: Postprocessing
     outlineEffect = new OutlineEffect(renderer, { defaultThickness: 0.01, defaultColor: [0, 0, 0] });
