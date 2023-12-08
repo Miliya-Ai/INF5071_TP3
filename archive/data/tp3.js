@@ -6,8 +6,8 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 
 
-// Kim Trinh
-// Miliya Ai
+// Kim Trinh (TRIK67540106)
+// Miliya Ai (AIXM70600104)
 
 //Chrome
 //Lien vers le skybox: https://www.humus.name/index.php?page=Cubemap&item=Tantolunden
