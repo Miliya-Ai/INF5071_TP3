@@ -16,7 +16,6 @@ import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
 let scene, camera, renderer, canvas;  // Bases pour le rendu Three.js
 // TODO: ajouter les variables nécessaires
 let mesh, material, outlineEffect, controlsArcball;
-let gl;   // The webgl context.
 let ambientLight, directionalLight;
 
 function loadFile(filePath) {
@@ -44,8 +43,6 @@ function createScene() {
     camera = new THREE.PerspectiveCamera( 100, canvas.clientWidth / canvas.clientHeight, 0.1, 1000 );
     camera.position.z = 5;
 
-
-    outlineEffect = new OutlineEffect(renderer, { defaultThickness: 0.01, defaultColor: [0, 0, 0] });
     loadCubemapTexture(scene);
 }
 
@@ -60,15 +57,6 @@ function loadCubemapTexture(scene) {
         "textures/posz.jpg"
     ]);
     scene.background = texture;
-}
-
-function createMaterial(vertShader, fragShader){
-    // TODO: Création du matériau Shader
-    let meshMaterial = new THREE.ShaderMaterial({
-        vertexShader: vertShader,
-        fragmentShader: fragShader
-        });
-    return meshMaterial;
 }
 
 function animate() {     
@@ -133,7 +121,7 @@ function init() {
     controlsArcball.update();
 
     // TODO: Postprocessing
-
+    outlineEffect = new OutlineEffect(renderer, { defaultThickness: 0.01, defaultColor: [0, 0, 0] });
     // Animation de la scèene (appelée toutes les 30 ms)
     animate();
 }
